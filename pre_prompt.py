@@ -1,7 +1,12 @@
 import os
 import httpx
 from openai import OpenAI
-from util import *
+
+from util import get_selected_questions, get_students_ability, pd, re, tqdm
+
+# These modules are referenced inside template strings that are executed by
+# the LLM, so we intentionally keep them in the namespace.
+_ = (pd, re, tqdm)
 
 # 定义超参数
 N = 20 # optimization num
@@ -14,6 +19,7 @@ P = 3 # max lesson plan num in optimization prompt
 ROOT_DIR = os.getcwd()
 DATASET_PATH = os.path.join(ROOT_DIR, "datasets/algebra222.csv")
 ABILITY_TREE_PATH = os.path.join(ROOT_DIR, "persona/ability_tree.json")
+Dataset_Dir = DATASET_PATH
 
 os.environ['HF_ENDPOINT'] = 'https://hf-mirror.com'
 os.environ["TRANSFORMERS_CACHE"] = os.path.join(ROOT_DIR, "models")
@@ -184,3 +190,4 @@ Common Mistakes 2:
 """
 
 selected_questions = get_selected_questions(DATASET_PATH, T)
+
